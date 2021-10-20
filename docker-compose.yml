@@ -1,0 +1,30 @@
+# Set the version of docker compose to use
+version: '3.9'
+
+# The containers that compose the project
+services:
+  db:
+    image: postgres:13
+    restart: always
+    container_name: database
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dbManga
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf    
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres:  
+  redis:      

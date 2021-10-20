@@ -1,0 +1,87 @@
+# Set the version of docker compose to use
+# version: '3.9'
+
+# # The containers that compose the project
+# services:
+#   db:
+#     image: postgres:13
+#     restart: always
+#     container_name: postgres
+#     ports:
+#       - 5432:5432
+#     env_file:
+#       - .env
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: dbManga
+#     volumes:
+#       - postgres:/var/lib/postgresql/data
+#     networks:
+#       - app-tier
+
+#   redis:
+#     image: redis:6.2.6
+#     restart: always
+#     container_name: redis
+#     ports:
+#      - "6379:6379"
+#     command: ["redis-server"]
+#     volumes:
+#      - 'redisdata:/data'
+#     networks:
+#      - redis
+
+#   prisma:
+#     container_name: prisma
+#     ports:
+#       - "5555:5555"
+#     build:
+#       context: prisma
+#       dockerfile: Dockerfile
+#     environment:
+#       DATABASE_URL: ${DATABASE_URL}
+#     links:
+#       - db
+#       # - redis
+#     depends_on:
+#       - db
+#       # - redis
+#     volumes:
+#       - prisma:/nextjs/prisma
+#     networks:
+#       - app-tier
+
+#   nextjs:
+#     container_name: front_back
+#     links:
+#       - postgres
+#       - redis
+#     depends_on:
+#       - postgres
+#       - redis
+#     build: 
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "3000:3000"
+#     networks:
+#       - app-tier
+#       - redis
+#     volumes:
+#       - .:/nextjs
+#       - /usr/src/nextjs/node_modules
+#       - /usr/src/nextjs/.next
+
+# volumes:
+#   postgres:  
+#   redisdata:
+#   prisma:  
+# networks:
+#   app-tier:
+#     driver: bridge
+#   redis:
+#     driver: bridge
+
+# ---------------------------------------------
+

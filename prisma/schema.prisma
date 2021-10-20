@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  engineType    = "library"
+  binaryTargets = ["linux-musl", "windows","native", "debian-openssl-1.1.x", "linux-arm-openssl-1.1.x"]
+}
+
+model Account {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email    String   @unique
+  name     String   @unique
+  password String
+  avatar   String
+  role     Role     @default(USER)
+  truyens Truyen[]
+}
+
+model Truyen {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tentruyen String @unique
+  namevn String
+  description String
+  avatar String
+  theloai TheLoai[]
+  soChuong ChuongTruyen[]
+  author Account @relation(fields: [authorId], references: [id])
+  authorId String @db.Uuid
+  view Int @default(0)
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+  country QuocGia @default(NhatBan)
+  loaitruyen NhomTruyen @default(TruyenTranh)
+  trangthai String @default("Đang cập nhật")
+}
+
+model ChuongTruyen {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String 
+  images String[]
+  textChuong String[]
+  truyen Truyen @relation(fields: [truyenId], references: [id])
+  truyenId String @db.Uuid
+  create_at DateTime @default(now())
+}
+
+model TheLoai {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String @unique
+  namekhongdau String @unique
+  get Boolean
+  truyen Truyen[] 
+}
+
+enum Role {
+  USER
+  ADMIN
+  AUTHOR
+}
+enum QuocGia {
+  NhatBan
+  HanQuoc
+  TrungQuoc
+  VietNam
+}
+
+enum NhomTruyen {
+  TruyenTranh
+  truyenChu
+}
