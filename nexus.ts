@@ -82,6 +82,10 @@ export interface NexusGenObjects {
     name: string; // String!
     textChuong?: string[] | null; // [String!]
   }
+  DataChuongPayload: { // root type
+    chuongTruyen?: Array<NexusGenRootTypes['ChuongTruyen'] | null> | null; // [ChuongTruyen]
+    truyen?: NexusGenRootTypes['Truyen'] | null; // Truyen
+  }
   File: { // root type
     url: string; // String!
   }
@@ -149,6 +153,10 @@ export interface NexusGenFieldTypes {
     textChuong: string[] | null; // [String!]
     truyen: NexusGenRootTypes['Truyen'] | null; // Truyen
   }
+  DataChuongPayload: { // field return type
+    chuongTruyen: Array<NexusGenRootTypes['ChuongTruyen'] | null> | null; // [ChuongTruyen]
+    truyen: NexusGenRootTypes['Truyen'] | null; // Truyen
+  }
   File: { // field return type
     url: string; // String!
   }
@@ -176,6 +184,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     getAccount: NexusGenRootTypes['Account'] | null; // Account
     getContentForHeader: NexusGenRootTypes['HeaderPayload'] | null; // HeaderPayload
+    getOneChuong: NexusGenRootTypes['DataChuongPayload'] | null; // DataChuongPayload
     getTheLoai: Array<NexusGenRootTypes['TheLoai'] | null> | null; // [TheLoai]
     getTruyenByAccount: NexusGenRootTypes['Truyen'] | null; // Truyen
     testAdmin: NexusGenRootTypes['Account'] | null; // Account
@@ -230,6 +239,10 @@ export interface NexusGenFieldTypeNames {
     textChuong: 'String'
     truyen: 'Truyen'
   }
+  DataChuongPayload: { // field return type name
+    chuongTruyen: 'ChuongTruyen'
+    truyen: 'Truyen'
+  }
   File: { // field return type name
     url: 'String'
   }
@@ -257,6 +270,7 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     getAccount: 'Account'
     getContentForHeader: 'HeaderPayload'
+    getOneChuong: 'DataChuongPayload'
     getTheLoai: 'TheLoai'
     getTruyenByAccount: 'Truyen'
     testAdmin: 'Account'
@@ -331,6 +345,10 @@ export interface NexusGenArgTypes {
   Query: {
     getAccount: { // args
       id?: string | null; // String
+    }
+    getOneChuong: { // args
+      halpId?: string | null; // String
+      namevn?: string | null; // String
     }
   }
 }

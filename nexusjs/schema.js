@@ -54,6 +54,43 @@ const Query = objectType({
       },
     });
 
+    t.nullable.field("getOneChuong", {
+      type: "DataChuongPayload",
+      args: {
+        namevn: stringArg(),
+        halpId: stringArg(),
+      },
+      resolve: async (_, args, context) => {
+        const { namevn, halpId } = args;
+        let chuong;
+        try {
+          const truyen = await context.prisma.truyen.findMany({
+            where: {
+              namevn,
+            },
+            select: {
+              id: true,
+              tentruyen: true,
+            },
+          });
+          chuong = truyen.map((item) => item.id.includes(halpId) && item);
+          // console.log(chuong[0].soChuong);
+        } catch (error) {
+          return new ApolloError("wrong somewhere", "404");
+        }
+        const kq = await context.prisma.chuongTruyen.findMany({
+          where: {
+            truyenId: chuong[0].id,
+          },
+          orderBy: {
+            create_at: "asc",
+          },
+        });
+
+        return { chuongTruyen: kq, truyen: chuong[0] };
+      },
+    });
+
     t.nullable.field("getContentForHeader", {
       type: "HeaderPayload",
       resolve: async (parent, args, context) => {
@@ -398,7 +435,6 @@ const Mutation = objectType({
         }
 
         let token;
-        console.log(account);
         try {
           token = await jwt.sign(
             {
@@ -859,6 +895,19 @@ const AuthPayload = objectType({
     });
   },
 });
+
+const DataChuongPayload = objectType({
+  name: "DataChuongPayload",
+  definition(t) {
+    t.field("truyen", {
+      type: "Truyen",
+    });
+    t.field("chuongTruyen", {
+      type: list("ChuongTruyen"),
+    });
+  },
+});
+
 const HeaderPayload = objectType({
   name: "HeaderPayload",
   definition(t) {
@@ -930,6 +979,7 @@ const AccountUniqueInput = inputObjectType({
 
 const schemaWithoutPermissions = makeSchema({
   types: [
+    DataChuongPayload,
     ListChuongPayload,
     TokenPayload,
     Query,

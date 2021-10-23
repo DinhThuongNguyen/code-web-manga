@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Index = (props) => {
-  const { chuong, name, description, avatar, theloai } = props;
+  const { chuong, name, description, avatar, theloai, idTruyen } = props;
   const [arr, setArr] = useState();
   const auth = useContext(AuthContext);
   const theme = useTheme();
@@ -229,7 +229,13 @@ const Index = (props) => {
                         component={Link}
                         href={`/truyen-tranh/${removeVietnameseTones(
                           name
-                        ).replaceAll(" ", "-")}/chap-${index}`}
+                        ).replaceAll(
+                          " ",
+                          "-"
+                        )}/chap-${index}&${idTruyen.substring(
+                          0,
+                          idTruyen.length / 2
+                        )}`}
                         style={{
                           borderColor: auth.checkedBackground
                             ? "blueviolet"
@@ -317,6 +323,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
+      idTruyen: tenTruyen[0].id,
       chuong: tenTruyen[0].soChuong,
       name: tenTruyen[0].tentruyen,
       description: tenTruyen[0].description,

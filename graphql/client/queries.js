@@ -25,4 +25,18 @@ const GET_CONTENT_FOR_HEADER = gql`
   }
 `;
 
-export { GET_ALL_THE_LOAI, GET_CONTENT_FOR_HEADER };
+const GET_CHUONG_TRUYEN = gql`
+  query queriesgetOneChuong($namevn: String, $halpId: String) {
+    getOneChuong(namevn: $namevn, halpId: $halpId) {
+      truyen {
+        tentruyen
+      }
+      chuongTruyen {
+        name
+        images
+      }
+    }
+  }
+`;
+
+export { GET_ALL_THE_LOAI, GET_CONTENT_FOR_HEADER, GET_CHUONG_TRUYEN };
